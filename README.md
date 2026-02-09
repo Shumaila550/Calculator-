@@ -1,13 +1,13 @@
-# Python GUI Calculator
+# Professional Python Calculator
 
-A professional calculator built using Python and Tkinter.
-It works like a mobile calculator with buttons and live results.
+A mobile-style calculator built with Python (Tkinter).
+Designed to behave like a real calculator.
 
 ## Features
-- Button based calculator
-- Shows expression and result (e.g. 3 + 5 = 8)
-- Error handling
-- Clean GUI
+- Button-based input
+- AC and backspace support
+- Safe calculation logic
+- Clean UI
 
-## How to Run
+## Run
 python calculator.py
