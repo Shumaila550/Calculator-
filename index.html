@@ -1,48 +1,77 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Mobile Calculator</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+import tkinter as tk
 
-<div class="calculator">
-    <input type="text" id="display" disabled>
+# Create main window
+app = tk.Tk()
+app.title("Professional Calculator")
+app.geometry("320x420")
+app.resizable(False, False)
 
-    <div class="buttons">
-        <!-- Numbers & Operators -->
-        <button onclick="press('7')">7</button>
-        <button onclick="press('8')">8</button>
-        <button onclick="press('9')">9</button>
-        <button onclick="setOp('/')">÷</button>
+expression = ""
 
-        <button onclick="press('4')">4</button>
-        <button onclick="press('5')">5</button>
-        <button onclick="press('6')">6</button>
-        <button onclick="setOp('*')">×</button>
+# Functions
+def press(key):
+    global expression
+    expression += str(key)
+    display_var.set(expression)
 
-        <button onclick="press('1')">1</button>
-        <button onclick="press('2')">2</button>
-        <button onclick="press('3')">3</button>
-        <button onclick="setOp('-')">−</button>
+def clear():
+    global expression
+    expression = ""
+    display_var.set("")
 
-        <button onclick="press('0')">0</button>
-        <button onclick="press('.')">.</button>
-        <button onclick="calculate()">=</button>
-        <button onclick="setOp('+')">+</button>
+def calculate():
+    global expression
+    try:
+        result = eval(expression)
+        display_var.set(f"{expression} = {result}")
+        expression = str(result)
+    except:
+        display_var.set("Error")
+        expression = ""
 
-        <!-- Clear & Backspace -->
-        <button onclick="clearAll()" class="wide">AC</button>
-        <button onclick="backspace()" class="wide">⌫</button>
+# Display
+display_var = tk.StringVar()
+display = tk.Entry(
+    app,
+    textvariable=display_var,
+    font=("Arial", 18),
+    bd=10,
+    relief="sunken",
+    justify="right"
+)
+display.pack(fill="both", ipadx=8, ipady=15, padx=10, pady=10)
 
-        <!-- Scientific -->
-        <button onclick="percent()" class="wide">%</button>
-        <button onclick="square()" class="wide">x²</button>
-        <button onclick="sqrt()" class="wide">√</button>
-        <button onclick="inverse()" class="wide">1/x</button>
-    </div>
-</div>
+# Buttons frame
+frame = tk.Frame(app)
+frame.pack()
 
-<script src="script.js"></script>
-</body>
-          </html>
+buttons = [
+    ('7', 1, 0), ('8', 1, 1), ('9', 1, 2), ('/', 1, 3),
+    ('4', 2, 0), ('5', 2, 1), ('6', 2, 2), ('*', 2, 3),
+    ('1', 3, 0), ('2', 3, 1), ('3', 3, 2), ('-', 3, 3),
+    ('0', 4, 0), ('.', 4, 1), ('=', 4, 2), ('+', 4, 3),
+]
+
+for (text, row, col) in buttons:
+    if text == "=":
+        btn = tk.Button(
+            frame, text=text, width=5, height=2,
+            font=("Arial", 14),
+            command=calculate
+        )
+    else:
+        btn = tk.Button(
+            frame, text=text, width=5, height=2,
+            font=("Arial", 14),
+            command=lambda t=text: press(t)
+        )
+    btn.grid(row=row, column=col, padx=5, pady=5)
+
+# Clear button
+clear_btn = tk.Button(
+    app, text="CLEAR", font=("Arial", 14),
+    command=clear, bg="#ff6666"
+)
+clear_btn.pack(fill="x", padx=10, pady=10)
+
+app.mainloop()
